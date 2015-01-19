@@ -26,7 +26,7 @@ reader_decoder::make (float us_per_sample, float tari)
 }
 
 reader_decoder::reader_decoder(float us_per_sample, float tari)
-  : gr::sync_block("rfid_reader_decoder",
+  : gr::sync_block("reader_decoder",
 	     gr::io_signature::make (1, 1, sizeof(float)),
 	     gr::io_signature::make (1,1,sizeof(float))),
     d_us_per_sample(us_per_sample)

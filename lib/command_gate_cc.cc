@@ -46,7 +46,7 @@ command_gate_cc::make (int pw, int T1, int sample_rate)
 }
 
 command_gate_cc::command_gate_cc(int pw, int T1, int sample_rate)
-  : gr::block("rfid_command_gate_cc",
+  : gr::block("command_gate_cc",
 	     gr::io_signature::make (1, 1, sizeof(gr_complex)),
 	     gr::io_signature::make (1, 1, sizeof(gr_complex))),
     d_pw(pw),

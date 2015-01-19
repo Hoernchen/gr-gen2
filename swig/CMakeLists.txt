@@ -52,7 +52,7 @@ GR_SWIG_MAKE(gen2_swig gen2_swig.i)
 ########################################################################
 # Install the build swig module
 ########################################################################
-GR_SWIG_INSTALL(TARGETS gen2_swig DESTINATION ${GR_PYTHON_DIR}/gen2)
+GR_SWIG_INSTALL(TARGETS gen2_swig DESTINATION ${GR_PYTHON_DIR}/gnuradio/gen2)
 
 ########################################################################
 # Install swig .i files for development
@@ -61,5 +61,5 @@ install(
     FILES
     gen2_swig.i
     ${CMAKE_CURRENT_BINARY_DIR}/gen2_swig_doc.i
-    DESTINATION ${GR_INCLUDE_DIR}/gen2/swig
+    DESTINATION ${GR_INCLUDE_DIR}/../gnuradio/gen2/swig
 )

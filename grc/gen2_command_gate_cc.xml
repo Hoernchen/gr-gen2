@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<block>
+  <name>gen2 command gate cc</name>
+  <key>rfid_command_gate_cc</key>
+  <category>RFID</category>
+  <import>from gnuradio import gen2</import>
+  <make>gen2.command_gate_cc($pw, $T1, $srate)</make>
+  <param>
+    <name>pw</name>
+    <key>pw</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>T1</name>
+    <key>T1</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>sample rate</name>
+    <key>srate</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

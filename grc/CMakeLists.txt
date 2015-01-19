@@ -18,5 +18,11 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
+	gen2_center_ff.xml
+	gen2_clock_recovery_zc_ff.xml
+	gen2_command_gate_cc.xml
+	gen2_reader_decoder.xml
+	gen2_reader_f.xml
+	gen2_tag_decoder_f.xml
     gen2_test.xml DESTINATION share/gnuradio/grc/blocks
 )

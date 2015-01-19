@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<block>
+  <name>gen2 clock recovery zc ff</name>
+  <key>rfid_clock_recovery_zc_ff</key>
+  <category>RFID</category>
+  <import>from gnuradio import gen2</import>
+  <make>gen2.clock_recovery_zc_ff($spp, $interp)</make>
+  <param>
+    <name>samples_per_pulse</name>
+    <key>spp</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>interp_factor</name>
+    <key>interp</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<block>
+  <name>gen2 center ff</name>
+  <key>rfid_center_ff</key>
+  <category>RFID</category>
+  <import>from gnuradio import gen2</import>
+  <make>gen2.center_ff($spp)</make>
+  <param>
+    <name>samples_per_pulse</name>
+    <key>spp</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

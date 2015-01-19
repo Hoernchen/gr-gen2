@@ -23,7 +23,7 @@ tag_decoder_f::make()
 }
 
 tag_decoder_f::tag_decoder_f()
-  : gr::block("rfid_tag_decoder_f",
+  : gr::block("tag_decoder_f",
 	     gr::io_signature::make (1, 1, sizeof(float)),
 	     gr::io_signature::make (1, 1, sizeof(float)))
   

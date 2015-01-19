@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<block>
+  <name>gen2 reader f</name>
+  <key>rfid_reader_f</key>
+  <category>RFID</category>
+  <import>from gnuradio import gen2</import>
+  <make>gen2.reader_f($srate)</make>
+  <param>
+    <name>sample_rate</name>
+    <key>srate</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>
