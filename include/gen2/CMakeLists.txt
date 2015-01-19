@@ -21,6 +21,13 @@
 # Install public header files
 ########################################################################
 install(FILES
-    api.h
+	api.h
+	center_ff.h
+	clock_recovery_zc_ff.h
+	command_gate_cc.h
+	global_vars.h
+	reader_decoder.h
+	reader_f.h
+	tag_decoder_f.h
     DESTINATION include/gen2
 )

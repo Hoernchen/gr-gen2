@@ -26,6 +26,13 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND gen2_sources
+	center_ff.cc
+	clock_recovery_zc_ff.cc
+	command_gate_cc.cc
+	global_vars.cc
+	reader_decoder.cc
+	reader_f.cc
+	tag_decoder_f.cc
 )
 
 set(gen2_sources "${gen2_sources}" PARENT_SCOPE)
@@ -52,27 +59,3 @@ install(TARGETS gnuradio-gen2
     ARCHIVE DESTINATION lib${LIB_SUFFIX} # .lib file
     RUNTIME DESTINATION bin              # .dll file
 )
-
-########################################################################
-# Build and register unit test
-########################################################################
-include(GrTest)
-
-include_directories(${CPPUNIT_INCLUDE_DIRS})
-
-list(APPEND test_gen2_sources
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_gen2.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/qa_gen2.cc
-)
-
-add_executable(test-gen2 ${test_gen2_sources})
-
-target_link_libraries(
-  test-gen2
-  ${GNURADIO_RUNTIME_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${CPPUNIT_LIBRARIES}
-  gnuradio-gen2
-)
-
-GR_ADD_TEST(test_gen2 test-gen2)
