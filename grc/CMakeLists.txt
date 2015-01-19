@@ -18,5 +18,5 @@
 # Boston, MA 02110-1301, USA.
 
 install(FILES
-    DESTINATION share/gnuradio/grc/blocks
+    gen2_test.xml DESTINATION share/gnuradio/grc/blocks
 )

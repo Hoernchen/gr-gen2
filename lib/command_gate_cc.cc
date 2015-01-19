@@ -36,15 +36,16 @@ catch_trigger_alarm (int sig){
  
 }
 
-
-
-rfid_command_gate_cc_sptr
-rfid_make_command_gate_cc (int pw, int T1, int sample_rate)
+namespace gr {
+namespace rfid {
+	
+command_gate_cc::sptr
+command_gate_cc::make (int pw, int T1, int sample_rate)
 {
-  return rfid_command_gate_cc_sptr (new rfid_command_gate_cc (pw, T1, sample_rate));
+  return gnuradio::get_initial_sptr(new command_gate_cc (pw, T1, sample_rate));
 }
 
-rfid_command_gate_cc::rfid_command_gate_cc(int pw, int T1, int sample_rate)
+command_gate_cc::command_gate_cc(int pw, int T1, int sample_rate)
   : gr::block("rfid_command_gate_cc",
 	     gr::io_signature::make (1, 1, sizeof(gr_complex)),
 	     gr::io_signature::make (1, 1, sizeof(gr_complex))),
@@ -92,21 +93,21 @@ rfid_command_gate_cc::rfid_command_gate_cc(int pw, int T1, int sample_rate)
 }
 
 
-rfid_command_gate_cc::~rfid_command_gate_cc()
+command_gate_cc::~command_gate_cc()
 {}
 
 inline bool 
-rfid_command_gate_cc::is_positive_edge(float sample){
+command_gate_cc::is_positive_edge(float sample){
   return sample > d_thresh;
   
 }
 inline bool 
-rfid_command_gate_cc::is_negative_edge(float sample){
+command_gate_cc::is_negative_edge(float sample){
   return sample < d_thresh;
   
 }
 
-int rfid_command_gate_cc::general_work(int noutput_items,
+int command_gate_cc::general_work(int noutput_items,
 					gr_vector_int &ninput_items,
 					gr_vector_const_void_star &input_items,
 					gr_vector_void_star &output_items)
@@ -272,7 +273,7 @@ int rfid_command_gate_cc::general_work(int noutput_items,
 }
 
 void 
-rfid_command_gate_cc::calc_signal_stats(float * buffer, int len, double * max, double * min, double * avg, double * std_dev)
+command_gate_cc::calc_signal_stats(float * buffer, int len, double * max, double * min, double * avg, double * std_dev)
 {
 
   *max = DBL_MIN;
@@ -310,7 +311,7 @@ rfid_command_gate_cc::calc_signal_stats(float * buffer, int len, double * max, d
 
 
 void
-rfid_command_gate_cc::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+command_gate_cc::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned i = 0; i < ninputs; i++){
@@ -318,6 +319,7 @@ rfid_command_gate_cc::forecast (int noutput_items, gr_vector_int &ninput_items_r
   }   
 }
 
-
+}
+}
 
 

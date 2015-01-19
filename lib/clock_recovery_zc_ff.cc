@@ -13,14 +13,16 @@
 
 
 
-
-rfid_clock_recovery_zc_ff_sptr
-rfid_make_clock_recovery_zc_ff(int samples_per_pulse, int interp_factor)
+namespace gr {
+	namespace rfid {
+		
+clock_recovery_zc_ff::sptr
+clock_recovery_zc_ff::make(int samples_per_pulse, int interp_factor)
 {
-  return rfid_clock_recovery_zc_ff_sptr(new rfid_clock_recovery_zc_ff(samples_per_pulse, interp_factor));
+  return gnuradio::get_initial_sptr(new clock_recovery_zc_ff(samples_per_pulse, interp_factor));
 }
 
-rfid_clock_recovery_zc_ff::~rfid_clock_recovery_zc_ff()
+clock_recovery_zc_ff::~clock_recovery_zc_ff()
 {
   
 
@@ -33,8 +35,8 @@ is_positive(float x){
 
 
 
-rfid_clock_recovery_zc_ff::rfid_clock_recovery_zc_ff(int samples_per_pulse, int interp_factor)
-  : gr::block("rfid_clock_recovery_zc_ff", 
+clock_recovery_zc_ff::clock_recovery_zc_ff(int samples_per_pulse, int interp_factor)
+  : gr::block("clock_recovery_zc_ff", 
 		      gr::io_signature::make(1,1,sizeof(float)),
 		      gr::io_signature::make(1,1,sizeof(float))),
     d_samples_per_pulse(samples_per_pulse), d_interp_factor(interp_factor)
@@ -49,7 +51,7 @@ rfid_clock_recovery_zc_ff::rfid_clock_recovery_zc_ff(int samples_per_pulse, int 
 
 
 int
-rfid_clock_recovery_zc_ff::general_work(int noutput_items,
+clock_recovery_zc_ff::general_work(int noutput_items,
 				gr_vector_int &ninput_items,
 				gr_vector_const_void_star &input_items,
 				gr_vector_void_star &output_items)
@@ -105,11 +107,14 @@ rfid_clock_recovery_zc_ff::general_work(int noutput_items,
 		
       
 void
-rfid_clock_recovery_zc_ff::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+clock_recovery_zc_ff::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned i = 0; i < ninputs; i++){
     ninput_items_required[i] = noutput_items + history();
     
   }   
+}
+
+}
 }

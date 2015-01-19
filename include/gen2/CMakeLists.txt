@@ -29,5 +29,5 @@ install(FILES
 	reader_decoder.h
 	reader_f.h
 	tag_decoder_f.h
-    DESTINATION include/gen2
+    test.h DESTINATION include/gen2
 )

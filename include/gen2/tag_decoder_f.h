@@ -8,20 +8,16 @@
 #include "global_vars.h"
 #include <gnuradio/message.h>
 #include <gnuradio/msg_queue.h>
+#include "api.h"
 
-class rfid_tag_decoder_f;
-typedef boost::shared_ptr<rfid_tag_decoder_f> rfid_tag_decoder_f_sptr;
+namespace gr {
+	namespace rfid {
 
-
-rfid_tag_decoder_f_sptr 
-rfid_make_tag_decoder_f ();
-
-class rfid_tag_decoder_f : public gr::block 
+class GEN2_API tag_decoder_f : public gr::block 
 {
  
  private:
-  friend rfid_tag_decoder_f_sptr
-  rfid_make_tag_decoder_f ();
+  tag_decoder_f ();
  
   
 
@@ -37,11 +33,13 @@ class rfid_tag_decoder_f : public gr::block
  
   gr::msg_queue::sptr	d_ctrl_out;  //Pipe control messages to reader block.
 
-  rfid_tag_decoder_f();
   void forecast (int noutput_items, gr_vector_int &ninput_items_required); 
  
  public:
-  ~rfid_tag_decoder_f();
+  typedef boost::shared_ptr<tag_decoder_f> sptr;
+  static sptr make();
+		  
+  ~tag_decoder_f();
   
   int general_work(int noutput_items, 
 		   gr_vector_int &ninput_items,
@@ -51,6 +49,7 @@ class rfid_tag_decoder_f : public gr::block
   void	set_ctrl_out(const gr::msg_queue::sptr msgq) { d_ctrl_out = msgq; }
 
 };
-
+}
+}
 #endif
 

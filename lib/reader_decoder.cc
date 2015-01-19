@@ -11,14 +11,21 @@
 #include <float.h>
 #include <cstdio>
 
+#define AVG_WIN 750.0f // Window to average amplitude over, in us
+#define THRESH_FRACTION 0.9f //Percent of avg amplitude to detect edges
+#define MAX_BITS 256  
+#define MIN_AMP_THRESH 0.0     //Eventually, expose as user parameter
 
-rfid_reader_decoder_sptr
-rfid_make_reader_decoder (float us_per_sample, float tari)
+namespace gr {
+	namespace rfid {
+		  
+reader_decoder::sptr
+reader_decoder::make (float us_per_sample, float tari)
 {
-  return gnuradio::get_initial_sptr (new rfid_reader_decoder (us_per_sample, tari));
+  return gnuradio::get_initial_sptr (new reader_decoder (us_per_sample, tari));
 }
 
-rfid_reader_decoder::rfid_reader_decoder(float us_per_sample, float tari)
+reader_decoder::reader_decoder(float us_per_sample, float tari)
   : gr::sync_block("rfid_reader_decoder",
 	     gr::io_signature::make (1, 1, sizeof(float)),
 	     gr::io_signature::make (1,1,sizeof(float))),
@@ -73,22 +80,22 @@ rfid_reader_decoder::rfid_reader_decoder(float us_per_sample, float tari)
 }
 
 
-rfid_reader_decoder::~rfid_reader_decoder()
+reader_decoder::~reader_decoder()
 {}
 
 inline bool 
-rfid_reader_decoder::is_positive_edge(float sample){
+reader_decoder::is_positive_edge(float sample){
   return sample > d_thresh;
   
 }
 inline bool 
-rfid_reader_decoder::is_negative_edge(float sample){
+reader_decoder::is_negative_edge(float sample){
   return sample < d_thresh;
   
 }
 
 
-int rfid_reader_decoder::work(int noutput_items, 
+int reader_decoder::work(int noutput_items, 
 	   gr_vector_const_void_star &input_items,
 	   gr_vector_void_star &output_items)
 {
@@ -295,7 +302,7 @@ int rfid_reader_decoder::work(int noutput_items,
 }
 
 void
-rfid_reader_decoder::advance_decoder(int next_state)
+reader_decoder::advance_decoder(int next_state)
 {
 
   d_high_count = 0;
@@ -310,7 +317,7 @@ rfid_reader_decoder::advance_decoder(int next_state)
 
 //Lag samples is to factor out the high/low count samples used to detect end of command
 void
-rfid_reader_decoder::log_event(int event, int lag_samples){
+reader_decoder::log_event(int event, int lag_samples){
   
   static int last_event = event;    //To avoid logging multiple power down events. 
 
@@ -367,4 +374,5 @@ rfid_reader_decoder::log_event(int event, int lag_samples){
   last_event = event;
 
 }
-
+}
+}

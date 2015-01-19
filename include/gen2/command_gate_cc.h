@@ -7,25 +7,19 @@
 #include <gnuradio/block.h>
 #include <gnuradio/message.h>
 #include <gnuradio/msg_queue.h>
+#include "api.h"
 
 #ifndef READER_VARS
 #include "global_vars.h"
 #endif
 
-
-class rfid_command_gate_cc;
-typedef boost::shared_ptr<rfid_command_gate_cc> rfid_command_gate_cc_sptr;
-
-
-rfid_command_gate_cc_sptr 
-rfid_make_command_gate_cc (int pw, int T1, int sample_rate);
-
-class rfid_command_gate_cc : public gr::block 
+namespace gr {
+	namespace rfid {
+class GEN2_API command_gate_cc : public gr::block 
 {
  
  private:
-  friend rfid_command_gate_cc_sptr
-  rfid_make_command_gate_cc (int pw, int T1, int sample_rate);
+  command_gate_cc (int pw, int T1, int sample_rate);
  
   float                   d_us_per_rcv;
   int	                d_pw;  //Reader pulsewidth in us
@@ -38,9 +32,9 @@ class rfid_command_gate_cc : public gr::block
   int                   d_num_pulses;
   
  
-  float static const AVG_WIN = 1500; // Window to average amplitude over, in us
-  float static const THRESH_FRACTION = 0.75; //Percent of avg amplitude to detect edges
-  double static const MIN_AMP_THRESH = 0;     //Eventually, expose as user parameter
+  #define AVG_WIN 1500.0f // Window to average amplitude over, in us
+  #define THRESH_FRACTION 0.75f //Percent of avg amplitude to detect edges
+  #define MIN_AMP_THRESH 0.0d     //Eventually, expose as user parameter
   float * d_window_samples;   //Array to hold samples for averaging amplitude
   int d_window_length;        //Length of window
   int d_window_index;         //Index to oldest sample
@@ -51,7 +45,6 @@ class rfid_command_gate_cc : public gr::block
 
   gr::msg_queue::sptr	d_ctrl_out;  //Pipe control messages to reader block.
 
-  rfid_command_gate_cc(int pw, int T1, int sample_rate);
   void forecast (int noutput_items, gr_vector_int &ninput_items_required);
   bool is_negative_edge(float sample);
   bool is_positive_edge(float sample);
@@ -62,7 +55,10 @@ class rfid_command_gate_cc : public gr::block
   
  
  public:
-  ~rfid_command_gate_cc();
+ typedef boost::shared_ptr<command_gate_cc> sptr;
+ static sptr make(int pw, int T1, int sample_rate);
+		  
+  ~command_gate_cc();
     
   int general_work(int noutput_items, 
 		   gr_vector_int &ninput_items,
@@ -72,6 +68,8 @@ class rfid_command_gate_cc : public gr::block
   void	set_ctrl_out(const gr::msg_queue::sptr msgq) { d_ctrl_out = msgq; }
 
 };
+}
+}
 
 #endif
 

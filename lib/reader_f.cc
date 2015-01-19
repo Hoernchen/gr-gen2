@@ -15,16 +15,19 @@
 #include <string.h>
 
 
-rfid_reader_f_sptr
-rfid_make_reader_f (int sample_rate)
+namespace gr {
+	namespace rfid {
+		
+reader_f::sptr
+reader_f::make (int sample_rate)
 {
-  return rfid_reader_f_sptr(new rfid_reader_f (sample_rate));
+  return gnuradio::get_initial_sptr(new reader_f (sample_rate));
 } 
 
 
 
 
-rfid_reader_f::rfid_reader_f (int sample_rate)
+reader_f::reader_f (int sample_rate)
   : gr::block ("reader_f",
 		   gr::io_signature::make (1, 1, sizeof(float)),
 		   gr::io_signature::make (1, 1, sizeof (float))),
@@ -140,7 +143,7 @@ rfid_reader_f::rfid_reader_f (int sample_rate)
 
 
  int
- rfid_reader_f::general_work(int noutput_items,
+ reader_f::general_work(int noutput_items,
 					 gr_vector_int &ninput_items,
 					 gr_vector_const_void_star &input_items,
 					 gr_vector_void_star &output_items)
@@ -373,7 +376,7 @@ rfid_reader_f::rfid_reader_f (int sample_rate)
  }
 
 void 
-rfid_reader_f::start_cycle(){
+reader_f::start_cycle(){
 
   Q_fp = INIT_QFP;
   int num_pkts = 0;
@@ -404,7 +407,7 @@ rfid_reader_f::start_cycle(){
 }
 
 
- void rfid_reader_f::send_query(){
+ void reader_f::send_query(){
    //Generate query to update Q etc.
    gen_query_cmd();
    
@@ -490,7 +493,7 @@ rfid_reader_f::start_cycle(){
  }
 
  void 
- rfid_reader_f::send_qrep(){
+ reader_f::send_qrep(){
 
    log_msg(LOG_QREP, NULL, LOG_OKAY);
    
@@ -548,7 +551,7 @@ rfid_reader_f::start_cycle(){
  }
 
 void
-rfid_reader_f::send_req_rn(){
+reader_f::send_req_rn(){
    log_msg(LOG_REQ_RN, NULL, LOG_OKAY);
 
    global_reader_state->last_cmd_sent = REQ_RN;
@@ -580,7 +583,7 @@ rfid_reader_f::send_req_rn(){
 }
 
 void
-rfid_reader_f::send_read(){
+reader_f::send_read(){
    log_msg(LOG_READ, NULL, LOG_OKAY);
 
    global_reader_state->last_cmd_sent = READ;
@@ -629,7 +632,7 @@ rfid_reader_f::send_read(){
 
 
  void
- rfid_reader_f::send_nak(){
+ reader_f::send_nak(){
    global_reader_state->nak_sent = true;
    log_msg(LOG_NAK, NULL, LOG_OKAY);
 
@@ -660,7 +663,7 @@ rfid_reader_f::send_read(){
 
 
  void 
- rfid_reader_f::send_ack(){
+ reader_f::send_ack(){
    float ack_msg[8196];
 
    log_msg(LOG_ACK, NULL, LOG_OKAY);
@@ -752,7 +755,7 @@ rfid_reader_f::send_read(){
 
 
  void
- rfid_reader_f::gen_query_cmd(){
+ reader_f::gen_query_cmd(){
 
    int len_query = 22;
 
@@ -974,7 +977,7 @@ rfid_reader_f::send_read(){
  }
 
  void
- rfid_reader_f::gen_nak_cmd(){
+ reader_f::gen_nak_cmd(){
   //Set up NAK message
    int len = 0;
    float tmp_nak[8196];
@@ -1008,7 +1011,7 @@ rfid_reader_f::send_read(){
 
 //This is a dummy function. It works for the WISP, as it just checks opcode and length.
 void 
-rfid_reader_f::gen_req_rn_cmd(){
+reader_f::gen_req_rn_cmd(){
   int len = 0;
   float tmp_req_rn[8196];
   memcpy(tmp_req_rn, d_reader_framesync, d_reader_framesync_len * sizeof(float));
@@ -1109,7 +1112,7 @@ rfid_reader_f::gen_req_rn_cmd(){
 
 //This is a dummy function. It works for the WISP, as it just checks opcode and length.
 void
-rfid_reader_f::gen_read_cmd(char * handle){
+reader_f::gen_read_cmd(char * handle){
 
   int len = 0;
   float tmp_read[8196];
@@ -1230,7 +1233,7 @@ rfid_reader_f::gen_read_cmd(char * handle){
 }
 
  void 
- rfid_reader_f::gen_qrep_cmd(){
+ reader_f::gen_qrep_cmd(){
 
    int len = 0;
    float tmp_qrep[8196];
@@ -1271,7 +1274,7 @@ rfid_reader_f::gen_read_cmd(char * handle){
 //1: 1 tag
 //2: 2 or more tags
 void 
-rfid_reader_f::update_q(int slot_occupancy){
+reader_f::update_q(int slot_occupancy){
   static float C = 0.5;
 
   switch (slot_occupancy){
@@ -1290,7 +1293,7 @@ rfid_reader_f::update_q(int slot_occupancy){
 }
 
 bool
-rfid_reader_f::send_another_query(){
+reader_f::send_another_query(){
   
 
   if(CHANGE_Q){
@@ -1337,7 +1340,7 @@ rfid_reader_f::send_another_query(){
 
 
  void
- rfid_reader_f::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+ reader_f::forecast (int noutput_items, gr_vector_int &ninput_items_required)
  {
    unsigned ninputs = ninput_items_required.size ();
    for (unsigned i = 0; i < ninputs; i++){
@@ -1348,7 +1351,7 @@ rfid_reader_f::send_another_query(){
 
 
  int
- rfid_reader_f::check_crc(char * bits, int num_bits){
+ reader_f::check_crc(char * bits, int num_bits){
    register unsigned short i, j;
    register unsigned short crc_16, rcvd_crc;
    unsigned char * data;
@@ -1395,12 +1398,12 @@ rfid_reader_f::send_another_query(){
 }
 
 void
-rfid_reader_f::set_num_samples_to_ungate(){
+reader_f::set_num_samples_to_ungate(){
   global_reader_state->num_samples_to_ungate = 100 + global_reader_state->num_samples_per_bit * 
     (global_reader_state->num_bits_to_decode + global_reader_state->num_bits_in_preamble) + (int)(250 / global_reader_state->us_per_rcv);
 }
 void
-rfid_reader_f::log_msg(int message, char * text, int error){
+reader_f::log_msg(int message, char * text, int error){
  if(LOGGING){
       char msg[1000];
       timeval time;
@@ -1422,4 +1425,7 @@ rfid_reader_f::log_msg(int message, char * text, int error){
       
       log_q->insert_tail(log_msg);
     }
+}
+
+}
 }

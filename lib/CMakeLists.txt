@@ -33,6 +33,7 @@ list(APPEND gen2_sources
 	reader_decoder.cc
 	reader_f.cc
 	tag_decoder_f.cc
+    test.cc
 )
 
 set(gen2_sources "${gen2_sources}" PARENT_SCOPE)

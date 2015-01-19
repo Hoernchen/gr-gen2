@@ -11,16 +11,18 @@
 #include <float.h>
 #include <cstdio>
 
-
+namespace gr {
+	namespace rfid {
+		
 //int 	tag_one_cor_vec[] = {1,-1,-1,1};
 //int tag_one_cor_vec[] = {1,-1,1,-1,1,-1,1,-1,-1,1,-1,1,-1,1,-1,1}; 
-rfid_tag_decoder_f_sptr
-rfid_make_tag_decoder_f ()
+tag_decoder_f::sptr
+tag_decoder_f::make()
 {
-  return rfid_tag_decoder_f_sptr (new rfid_tag_decoder_f ());
+  return gnuradio::get_initial_sptr(new tag_decoder_f ());
 }
 
-rfid_tag_decoder_f::rfid_tag_decoder_f()
+tag_decoder_f::tag_decoder_f()
   : gr::block("rfid_tag_decoder_f",
 	     gr::io_signature::make (1, 1, sizeof(float)),
 	     gr::io_signature::make (1, 1, sizeof(float)))
@@ -40,12 +42,12 @@ rfid_tag_decoder_f::rfid_tag_decoder_f()
 }
 
 
-rfid_tag_decoder_f::~rfid_tag_decoder_f()
+tag_decoder_f::~tag_decoder_f()
 {}
 
 
 
-int rfid_tag_decoder_f::general_work(int noutput_items,
+int tag_decoder_f::general_work(int noutput_items,
 					gr_vector_int &ninput_items,
 					gr_vector_const_void_star &input_items,
 					gr_vector_void_star &output_items)
@@ -205,11 +207,13 @@ int rfid_tag_decoder_f::general_work(int noutput_items,
 }
 
 void
-rfid_tag_decoder_f::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+tag_decoder_f::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned i = 0; i < ninputs; i++){
     //    ninput_items_required[i] = noutput_items + history();
     ninput_items_required[i] = history();  //Note, this may overschedule this block. Lots of overhead.
   }   
+}
+}
 }
