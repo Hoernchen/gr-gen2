@@ -103,19 +103,12 @@ endif(APPLE)
 ########################################################################
 # Find gnuradio build dependencies
 ########################################################################
-find_package(CppUnit)
-find_package(Doxygen)
-
 # Search for GNU Radio and its components and versions. Add any
 # components required to the list of GR_REQUIRED_COMPONENTS (in all
 # caps such as FILTER or FFT) and change the version to the minimum
 # API compatible version required.
 set(GR_REQUIRED_COMPONENTS RUNTIME)
 find_package(Gnuradio "3.7.2" REQUIRED)
-
-if(NOT CPPUNIT_FOUND)
-    message(FATAL_ERROR "CppUnit required to compile gen2")
-endif()
 
 ########################################################################
 # Setup the include and linker paths
@@ -161,7 +154,6 @@ add_subdirectory(swig)
 add_subdirectory(python)
 add_subdirectory(grc)
 add_subdirectory(apps)
-add_subdirectory(docs)
 
 ########################################################################
 # Install cmake search helper for this library
